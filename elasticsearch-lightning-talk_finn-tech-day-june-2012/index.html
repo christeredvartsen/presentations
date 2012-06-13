@@ -48,13 +48,11 @@
     <h2>What is elasticsearch?</h2>
     <div class="section">
         <ul>
-            <li>Open Source search engine</li>
+            <li>Open Source search engine (uses Lucene)</li>
             <li>Schema free and document oriented (NoSQL)</li>
-            <li>Distributed</li>
-            <li>RESTful API</li>
             <li>Multitenancy</li>
+            <li>Distributed</li>
             <li>Cloud friendly</li>
-            <li>Uses Lucene</li>
         </ul>
     </div>
 </section>
@@ -167,7 +165,7 @@
 curl -XDELETE 'http://host/vgd/threads/_query' -d '{
   "term": { "forumId": "2" }
 }'</pre>
-        <p>Delete all posts that contains the word "wine", except the posts that also contains "beer:"</p>
+        <p>Delete all posts that contains the word "wine", except the posts that also contains "beer":</p>
         <pre>curl -XDELETE 'http://host/vgd/posts/_query?q=%2Bwine+-beer'</pre>
     </div>
 </section>
@@ -253,9 +251,9 @@ March (11)</pre></li>
             <li>Reverse operation of indexing and then searching</li>
             <li>Register queries instead of documents, then push documents and see which queries that match the document</li>
         </ul>
-        <p>Create an index</p>
+        <p>Create an index:</p>
         <pre>curl -XPUT 'http://host/vgd'</pre>
-        <p>Register a query</p>
+        <p>Register a query:</p>
         <pre>curl -XPUT 'http://host/_percolator/vgd/beer' -d '{
   "query": {
     "term": {
@@ -268,7 +266,7 @@ March (11)</pre></li>
 <section class="slide" id="percolation2">
     <h2>Percolation (contd.)</h2>
     <div class="section">
-        <p>Percolate a document to see which queries that match</p>
+        <p>Percolate a document to see which queries that match:</p>
         <pre>curl -XPOST 'http://host/vgd/posts/_percolate' -d '{
   "doc": { "title": "Some title including beer" }
 }'</pre><pre>{
