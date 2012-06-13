@@ -220,7 +220,6 @@ curl -XDELETE 'http://host/vgd/threads/_query' -d '{
         <ul>
             <li>Zero configuration node detection (multicast)</li>
             <li>Easy manual configuration (unicast)</li>
-            <li>Every node in the cluster can be master</li>
             <li>Every node in the cluster can be used to index/search</li>
             <li>Automatic rebalancing and routing when new nodes enter the cluster</li>
             <li>Individual node configuration</li>
@@ -284,18 +283,8 @@ March (11)</pre></li>
   </div>
 </section>
 
-<section class="slide" id="rivers">
-    <h2>Rivers</h2>
-    <div class="section">
-        <ul>
-            <li>A pluggable service pulling data (or being pushed with data) that will be indexed</li>
-            <li>Rivers already implemented: <strong>MongoDB, RSS, CouchDB, RabbitMQ, Twitter, Wikipedia</strong></li>
-        </ul>
-    </div>
-</section>
-
 <section class="slide" id="aliases_with_filtering">
-    <h2>Index aliases with filtering</h2>
+    <h2>Index aliases with filtering (views)</h2>
     <div class="section">
         <p>Create alias with a filter:</p>
         <pre>curl -XPOST 'http://host/_aliases' -d '{
@@ -312,6 +301,16 @@ March (11)</pre></li>
 
         <p>Search alias:</p>
         <pre>curl 'http://host/<strong>christersposts</strong>/_search?q=beer'</pre>
+    </div>
+</section>
+
+<section class="slide" id="rivers">
+    <h2>Rivers</h2>
+    <div class="section">
+        <ul>
+            <li>A river is a service running within elasticsearch cluster pulling data (or being pushed with data) that is then indexed into the cluster</li>
+            <li>Rivers already implemented: <strong>MongoDB, RSS, CouchDB, RabbitMQ, Twitter, Wikipedia</strong></li>
+        </ul>
     </div>
 </section>
 
