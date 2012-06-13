@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="deck/core/deck.core.css">
 	<link rel="stylesheet" href="deck/extensions/navigation/deck.navigation.css">
 	<link rel="stylesheet" href="deck/extensions/status/deck.status.css">
+	<link rel="stylesheet" href="deck/extensions/ignite/deck.ignite.css">
 	<link rel="stylesheet" href="deck/extensions/hash/deck.hash.css">
 	<link rel="stylesheet" href="deck/themes/transition/horizontal-slide.css">
 	<link rel="stylesheet" href="style.css">
@@ -101,19 +102,14 @@
     <h2>HTTP API - search</h2>
     <h3><code>GET|POST http://host[:port][/index,[...][/type,[...]]]/_search</code></h3>
     <div class="section">
-        <p>Examples (GET):</p>
-        <dl>
-            <dt>One index, one type</dt>
-            <dd><code>http://host/vgd/threads/_search?q=beer</code></dd>
-            <dt>One index, two types</dt>
-            <dd><code>http://host/vgd/threads,posts/_search?q=beer</code></dd>
-            <dt>One index</dt>
-            <dd><code>http://host/vgd/_search?q=beer</code></dd>
-            <dt>Two indexes</dt>
-            <dd><code>http://host/vg,vgd/_search?q=beer</code></dd>
-            <dt>SEARCH ALL THE DATA!</dt>
-            <dd><code>http://host/_search?q=beer</code></dd>
-        </dl>
+        <p>Examples:</p>
+        <ul>
+            <li><code>http://host/vgd/threads/_search?q=beer</code></li>
+            <li><code>http://host/vgd/threads,posts/_search?q=beer</code></li>
+            <li><code>http://host/vgd/_search?q=beer</code></li>
+            <li><code>http://host/vg,vgd/_search?q=beer</code></li>
+            <li><code>http://host/_search?q=beer</code></li>
+        </ul>
     </div>
 </section>
 
@@ -358,9 +354,14 @@ March (11)</pre></li>
 
 <!-- deck.status snippet -->
 <p class="deck-status">
-	<span class="deck-status-current"></span>
-	/
+	Slide <span class="deck-status-current"></span>
+	of
 	<span class="deck-status-total"></span>
+</p>
+
+<!-- deck.ignite snippet -->
+<p class="deck-ignite">
+    <span class="deck-ignite-countdown"></span>
 </p>
 
 <!-- deck.hash snippet -->
@@ -372,13 +373,17 @@ March (11)</pre></li>
 <script src="deck/core/deck.core.js"></script>
 <script src="deck/extensions/hash/deck.hash.js"></script>
 <script src="deck/extensions/status/deck.status.js"></script>
+<script src="deck/extensions/ignite/deck.ignite.js"></script>
 <script src="deck/extensions/navigation/deck.navigation.js"></script>
 <script src="deck/modernizr.custom.js"></script>
 
 <!-- Initialize the deck -->
 <script>
 $(function() {
-    $.deck(".slide");
+    $.deck(".slide", {
+        igniteDelay: 15,
+        showCountdown: true
+    });
 });
 </script>
 </body>
