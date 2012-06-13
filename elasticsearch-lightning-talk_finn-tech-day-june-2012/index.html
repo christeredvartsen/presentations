@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="deck/core/deck.core.css">
     <link rel="stylesheet" href="deck/extensions/navigation/deck.navigation.css">
     <link rel="stylesheet" href="deck/extensions/status/deck.status.css">
-    <link rel="stylesheet" href="deck/extensions/ignite/deck.ignite.css">
     <link rel="stylesheet" href="deck/extensions/hash/deck.hash.css">
     <link rel="stylesheet" href="deck/themes/transition/horizontal-slide.css">
     <link rel="stylesheet" href="style.css">
@@ -359,11 +358,6 @@ March (11)</pre></li>
     <span class="deck-status-total"></span>
 </p>
 
-<!-- deck.ignite snippet -->
-<p class="deck-ignite">
-    <span class="deck-ignite-countdown"></span>
-</p>
-
 <!-- deck.hash snippet -->
 <a href="." title="Permalink to this slide" class="deck-permalink">#</a>
 
@@ -373,17 +367,13 @@ March (11)</pre></li>
 <script src="deck/core/deck.core.js"></script>
 <script src="deck/extensions/hash/deck.hash.js"></script>
 <script src="deck/extensions/status/deck.status.js"></script>
-<script src="deck/extensions/ignite/deck.ignite.js"></script>
 <script src="deck/extensions/navigation/deck.navigation.js"></script>
 <script src="deck/modernizr.custom.js"></script>
 
 <!-- Initialize the deck -->
 <script>
 $(function() {
-    $.deck(".slide", {
-        igniteDelay: 15,
-        showCountdown: true
-    });
+    $.deck(".slide");
 });
 </script>
 </body>
