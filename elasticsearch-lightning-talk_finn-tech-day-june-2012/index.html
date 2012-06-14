@@ -72,6 +72,50 @@
     </div>
 </section>
 
+<section class="slide" id="index_configuration">
+    <h2>Index configuration</h2>
+    <div class="section">
+      <pre>curl -XPUT 'http://host/vgd' -d '{
+  "settings": {
+    "number_of_shards": "3",
+    "number_of_replicas": "2",
+    "refresh_interval": "1s"
+  }
+}'</pre>
+        <ul>
+            <li>Optimize configuration per index</li>
+            <li>Number of shards can't be changed</li>
+            <li>Replicas can be added (handles search)</li>
+            <li>Each shard is a Lucene index</li>
+            <li>Documents are searchable "instantly" (default refresh of 1 sec)</li>
+            <li>Uses a write-ahead transaction log</li>
+        </ul>
+    </div>
+</section>
+
+<section class="slide" id="mapping">
+    <h2>Mapping document fields</h2>
+    <div class="section">
+        <pre>curl -XPUT 'http://host/vgd/threads/_mapping' -d '{
+  "threads": {
+    "properties": {
+      "created": { "type": "date", "format": "yyyy-MM-dd HH:mm:ss" },
+      "forumId": { "type": "integer" },
+      "id": { "type": "integer" },
+      "title": { "type": "string" },
+      "userId": { "type": "integer" }
+    }
+  }
+}'</pre>
+        <ul>
+            <li>Automatically created by elasticsearch</li>
+            <li>Merge conflicts can happen when you change a mapping</li>
+            <li>Decide on a good mapping before initial indexing</li>
+            <li>Many different types: <strong>string, date, integer, array, object, boolean, ip, geo_point</strong></li>
+        </ul>
+    </div>
+</section>
+
 <section class="slide" id="http_api_index">
     <h2>HTTP API - index a document</h2>
     <div class="section">
@@ -140,6 +184,33 @@
     </div>
 </section>
 
+<section class="slide" id="facets">
+    <h2>Facets</h2>
+    <div class="section">
+        <ul>
+            <li>Group content based on terms (fields in a document):<pre>IPA (5)
+Double IPA (10)
+Imperial Stout (7)</pre></li>
+        <li>Group content based on date ranges with fields of the <strong>date</strong> type:<pre>
+January (12)
+February (34)
+March (11)</pre></li>
+            <li>Other types: <strong>query, statistical, geo distance, histogram</strong></li>
+        </ul>
+    </div>
+</section>
+
+<section class="slide" id="geo_search">
+    <h2>Geo search</h2>
+    <div class="section">
+        <ul>
+            <li>Index fields as geo_point (lat/long)</li>
+            <li>Predefined filters: <strong>geo_bbox, geo_distance, geo_polygon</strong></li>
+            <li>Geo distance facet to group search results by distance from a point</li>
+        </ul>
+    </div>
+</section>
+
 <section class="slide" id="http_api_delete">
     <h2>HTTP API - delete documents</h2>
     <div class="section">
@@ -167,79 +238,6 @@ curl -XDELETE 'http://host/vgd/threads/_query' -d '{
 }'</pre>
         <p>Delete all posts that contains the word "wine", except the posts that also contains "beer":</p>
         <pre>curl -XDELETE 'http://host/vgd/posts/_query?q=%2Bwine+-beer'</pre>
-    </div>
-</section>
-
-<section class="slide" id="mapping">
-    <h2>Mapping document fields</h2>
-    <div class="section">
-        <pre>curl -XPUT 'http://host/vgd/threads/_mapping' -d '{
-  "threads": {
-    "properties": {
-      "created": { "type": "date", "format": "yyyy-MM-dd HH:mm:ss" },
-      "forumId": { "type": "integer" },
-      "id": { "type": "integer" },
-      "title": { "type": "string" },
-      "userId": { "type": "integer" }
-    }
-  }
-}'</pre>
-        <ul>
-            <li>Automatically created by elasticsearch</li>
-            <li>Merge conflicts can happen when you change a mapping</li>
-            <li>Decide on a good mapping before initial indexing</li>
-            <li>Many different types: <strong>string, date, integer, array, object, boolean, ip, geo_point</strong></li>
-        </ul>
-    </div>
-</section>
-
-<section class="slide" id="index_configuration">
-    <h2>Index configuration</h2>
-    <div class="section">
-      <pre>curl -XPUT 'http://host/vgd' -d '{
-  "settings": {
-    "number_of_shards": "3",
-    "number_of_replicas": "2",
-    "refresh_interval": "1s"
-  }
-}'</pre>
-        <ul>
-            <li>Optimize configuration per index</li>
-            <li>Number of shards can't be changed</li>
-            <li>Replicas can be added (handles search)</li>
-            <li>Each shard is a Lucene index</li>
-            <li>Documents are searchable "instantly" (default refresh of 1 sec)</li>
-            <li>Uses a write-ahead transaction log</li>
-        </ul>
-    </div>
-</section>
-
-<section class="slide" id="distributed">
-    <h2>Distributed</h2>
-    <div class="section">
-        <ul>
-            <li>Zero configuration node detection (multicast)</li>
-            <li>Easy manual configuration (unicast)</li>
-            <li>Every node in the cluster can be used to index/search</li>
-            <li>Automatic rebalancing and routing when new nodes enter the cluster</li>
-            <li>Individual node configuration</li>
-        </ul>
-    </div>
-</section>
-
-<section class="slide" id="facets">
-    <h2>Facets</h2>
-    <div class="section">
-        <ul>
-            <li>Group content based on terms (fields in a document), for instance "beer style":<pre>IPA (5)
-Double IPA (10)
-Imperial Stout (7)</pre></li>
-            <li>Group content based on date ranges:<pre>
-January (12)
-February (34)
-March (11)</pre></li>
-            <li>Other types: <strong>query, statistical, geo distance, histogram</strong></li>
-        </ul>
     </div>
 </section>
 
@@ -304,6 +302,19 @@ March (11)</pre></li>
     </div>
 </section>
 
+<section class="slide" id="distributed">
+    <h2>Distributed</h2>
+    <div class="section">
+        <ul>
+            <li>Zero configuration node detection (multicast)</li>
+            <li>Easy manual configuration (unicast)</li>
+            <li>Every node in the cluster can be used to index/search</li>
+            <li>Automatic rebalancing and routing when new nodes enter the cluster</li>
+            <li>Individual node configuration</li>
+        </ul>
+    </div>
+</section>
+
 <section class="slide" id="rivers">
     <h2>Rivers</h2>
     <div class="section">
@@ -314,23 +325,12 @@ March (11)</pre></li>
     </div>
 </section>
 
-<section class="slide" id="geo_search">
-    <h2>Geo search</h2>
-    <div class="section">
-        <ul>
-            <li>Index fields as geo_point (lat/long)</li>
-            <li>Predefined filters: <strong>geo_bbox, geo_distance, geo_polygon</strong></li>
-            <li>Geo distance facet to group search results by distance from a point</li>
-        </ul>
-    </div>
-</section>
-
 <section class="slide" id="interfaces_and_clients">
     <h2>Interfaces and clients</h2>
     <div class="section">
         <ul>
-            <li>REST</li>
-            <li>Memcached</li>
+            <li>RESTful HTTP API</li>
+            <li>Memcached API</li>
             <li>Native Java / Groovy API's</li>
             <li>Clients: <strong>PHP, Python, Perl, JavaScript, Ruby, Erlang, .NET, Clojure, Scala, +++</strong></li>
         </ul>
@@ -371,7 +371,7 @@ March (11)</pre></li>
 <script src="deck/extensions/hash/deck.hash.js"></script>
 <script src="deck/extensions/status/deck.status.js"></script>
 <script src="deck/extensions/navigation/deck.navigation.js"></script>
-<script src="deck/extensions/ignite/deck.ignite.js"></script>
+<!-- <script src="deck/extensions/ignite/deck.ignite.js"></script> -->
 <script src="deck/modernizr.custom.js"></script>
 
 <!-- Initialize the deck -->
