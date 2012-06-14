@@ -1,10 +1,8 @@
 .deck-container .deck-status {
   position: absolute;
-  bottom: 40px;
-  right: 40px;
+  bottom: 12px;
+  right: 20px;
   color: #888;
-  z-index: 3;
-  margin: 0;
 }
 
 body.deck-container .deck-status {
