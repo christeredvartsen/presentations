@@ -7,26 +7,8 @@ section.slide {
     background: transparent url('bg_top.jpg') repeat-x left top;
 }
 
-section div.section {
-    font-size: 1.2em;
-}
-
 .deck-container ul li {
     margin-bottom: .5em;
-}
-
-.deck-container dl {
-    margin-left: 1em;
-}
-
-.deck-container dt {
-    font-weight: bold;
-    margin-bottom: .1em;
-}
-
-.deck-container dd {
-    margin-left: 1em;
-    margin-bottom: .8em;
 }
 
 #logo {
