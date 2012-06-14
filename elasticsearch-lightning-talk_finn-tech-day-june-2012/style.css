@@ -1,6 +1,6 @@
 body.deck-container {
     background: transparent url('bg_bottom.jpg') repeat-x left bottom;
-    font-size: .8em;
+    font-size: 1.2em;
 }
 
 section.slide {
@@ -31,8 +31,8 @@ section div.section {
 
 #logo {
     position: absolute;
-    bottom: 5px;
-    left: 8px;
+    bottom: 15px;
+    left: 20px;
 }
 
 #title h1, #title h2, #thanks h1, #thanks h2 {
@@ -48,10 +48,6 @@ section div.section {
     top: 30%;
 }
 
-#thanks h1 {
-    top: 40%;
-}
-
 #title h2 {
     left: 0;
     top: 45%;
@@ -65,12 +61,12 @@ section div.section {
 footer {
     width: 100%;
     position: absolute;
-    bottom: 12px;
+    bottom: 40px;
     left: 0;
 }
 
 footer p {
-    color: #888;
+    color: #666;
     text-align: center;
 }
 
@@ -95,14 +91,11 @@ footer p {
 #filters,
 #facets
 {
-    padding: 0px 75px;
+    padding: 60px 175px 0 175px;
 }
 
 .deck-container section pre {
-    font-size: .6em;
-    padding: 5px;
+    font-size: .8em;
 }
 
-.deck-container p { margin-bottom: 3px; }
-
-.slide h3 { margin-bottom: 20px; font-size: 1.3em; }
+.slide h3 { margin-bottom: 30px; }

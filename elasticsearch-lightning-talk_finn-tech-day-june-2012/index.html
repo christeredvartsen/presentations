@@ -61,6 +61,7 @@
     <h2>HTTP API - structure</h2>
     <h3><code>http://host[:port][/index[/type[/id]]][/_action[/params]]</code></h3>
     <div class="section">
+        <p>Examples:</p>
         <ul>
             <li>http://host/vgd/threads/&lt;id&gt;</li>
             <li>http://host/vgd/posts/_stats</li>
@@ -87,6 +88,7 @@
             <li>Replicas can be added (handles search)</li>
             <li>Each shard is a Lucene index</li>
             <li>Documents are searchable "instantly" (default refresh of 1 sec)</li>
+            <li>Uses a write-ahead transaction log</li>
         </ul>
     </div>
 </section>
@@ -142,14 +144,19 @@
     <h2>HTTP API - search</h2>
     <h3><code>GET|POST http://host[:port][/index,[...][/type,[...]]]/_search</code></h3>
     <div class="section">
-        <p>Examples:</p>
-        <ul>
-            <li><code>http://host/vgd/threads/_search?q=beer</code></li>
-            <li><code>http://host/vgd/threads,posts/_search?q=beer</code></li>
-            <li><code>http://host/vgd/_search?q=beer</code></li>
-            <li><code>http://host/vg,vgd/_search?q=beer</code></li>
-            <li><code>http://host/_search?q=beer</code></li>
-        </ul>
+        <p>Examples (GET):</p>
+        <dl>
+            <dt>One index, one type</dt>
+            <dd><code>http://host/vgd/threads/_search?q=beer</code></dd>
+            <dt>One index, two types</dt>
+            <dd><code>http://host/vgd/threads,posts/_search?q=beer</code></dd>
+            <dt>One index</dt>
+            <dd><code>http://host/vgd/_search?q=beer</code></dd>
+            <dt>Two indexes</dt>
+            <dd><code>http://host/vg,vgd/_search?q=beer</code></dd>
+            <dt>SEARCH ALL THE DATA!</dt>
+            <dd><code>http://host/_search?q=beer</code></dd>
+        </dl>
     </div>
 </section>
 
