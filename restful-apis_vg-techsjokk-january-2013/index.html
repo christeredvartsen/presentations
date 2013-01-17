@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->  <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="Christer Edvartsen">
+    <meta name="viewport" content="width=1024, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>RESTful web services</title>
+
+    <link rel="stylesheet" href="../deck/core/deck.core.css">
+
+    <link rel="stylesheet" href="../deck/extensions/navigation/deck.navigation.css">
+    <link rel="stylesheet" href="../deck/extensions/status/deck.status.css">
+    <link rel="stylesheet" href="../deck/extensions/hash/deck.hash.css">
+
+    <link rel="stylesheet" href="../deck/themes/transition/horizontal-slide.css">
+
+    <link rel="stylesheet" href="../vg.css">
+    <link rel="stylesheet" href="../highlight.js/styles/solarized_dark.css">
+</head>
+
+<body>
+    <img src="../logo.png" id="logo">
+    <article class="deck-container">
+        <section class="slide" id="title-slide">
+            <h1>RESTful web services</h1>
+        </section>
+
+        <section class="slide">
+            <h2><em>RE</em>presentational <em>S</em>tate <em>T</em>ransfer</h2>
+            <ul>
+                <li>Defined in 2000 by Roy Fielding</li>
+                <li>Not a protocol (like SOAP), but a software architecture</li>
+                <li>Defines six constraints:<ul>
+                    <li><strong>Client-server</strong> - <em>A uniform interface exists between clients and servers</em></li>
+                    <li><strong>Stateless</strong> - <em>No client context is stored on the server between requests</em></li>
+                    <li><strong>Cacheable</strong> - <em>Clients can cache responses, if the response defines itself as cacheable</em></li>
+                    <li><strong>Layered System</strong> - <em>Client does not know if it talks directly to the server or an intermediary</em></li>
+                    <li><strong>Code on demand (optional)</strong> - <em>Servers can extend or customize the functionality of a client (Java applets for instance)</em></li>
+                    <li><strong>Uniform interface</strong> - <em>Easier to implement different clients aginst the same server interface</em></li>
+                </ul></li>
+                <li>Conforming to these constraints is referred to as "RESTful"</li>
+            </ul>
+        </section>
+
+        <section class="slide">
+            <h2>The uniform interface</h2>
+            <ul>
+                <li><strong>Identification of resources</strong> - <em>conceptually separate from the representations</em></li>
+                <li><strong>Manipulation of resources</strong> - <em>Clients can modify/delete resources if it has permission to do so</em></li>
+                <li><strong>Self-descriptive messages</strong> - <em>Enough information is included in the response to make the client know how to process it</em></li>
+                <li><strong>Hypermedia as the engine of application state (HATEOAS)</strong> - <em>The responses contain information on how to further use the interface, for instance by using hyperlinks within hypertext</em></li>
+            </ul>
+        </section>
+
+        <section class="slide">
+            <h2>RESTful web services</h2>
+            <p>A collection of resources, with four defined aspects:</p>
+            <ul>
+                <li>A base URI for the web service</li>
+                <li>One or more media types that can represent the resources (for instance application/xml or application/json)</li>
+                <li>The operations supported (for instance GET, PUT, POST, or DELETE)</li>
+                <li>Hypertext driven API (HATEOAS)</li>
+            </ul>
+        </section>
+
+        <section class="slide">
+            <h2>Examples of operations on resources</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Resource</th>
+                        <th>GET</th>
+                        <th>PUT</th>
+                        <th>POST</th>
+                        <th>DELETE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="nowrap">http://api.vg.no/articles</td>
+                        <td>List articles and related metadata</td>
+                        <td>Replace the entire collection of articles</td>
+                        <td>Create a new article in the collection</td>
+                        <td>Delete all articles</td>
+                    </tr>
+                    <tr>
+                        <td class="nowrap">http://api.vg.no/articles/123</td>
+                        <td>Fetch a representation of the article</td>
+                        <td>Replace or create the article</td>
+                        <td>Update parts of an article</td>
+                        <td>Delete the article</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="slide">
+            <h2>JSON representation</h2>
+            <pre><code class="http">GET /articles HTTP/1.1
+Host: api.vg.no
+Accept: application/json</code></pre>
+            <hr>
+            <pre><code class="http">HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Allow: GET, PUT, POST, DELETE</code></pre>
+            <pre><code class="json">[
+  {"id": 123, "category": "spill", "title": "Blaster Master"},
+  {"id": 1234, "category": "sport", "title": "Kurt Maflin does a 147"}
+]</code></pre>
+        </section>
+
+        <section class="slide">
+            <h2>XML representation</h2>
+            <pre><code class="http">GET /articles HTTP/1.1
+Host: api.vg.no
+Accept: application/xml</code></pre>
+            <hr>
+            <pre><code class="http">HTTP/1.1 200 OK
+Content-Type: application/xml; charset=utf-8
+Allow: GET, PUT, POST, DELETE</code></pre>
+            <pre><code class="XML">&lt;?xml version="1.0" encoding="utf-8">
+&lt;articles>
+    &lt;article id="123">
+        &lt;category>spill&lt;/category>
+        &lt;title>Blaster Master&lt;/title>
+    &lt;/article>
+    &lt;article id="1234">
+        &lt;category>sport&lt;/category>
+        &lt;title>Kurt Maflin does a 147&lt;/title>
+    &lt;/article>
+&lt;/articles></code></pre>
+        </section>
+
+        <section class="slide">
+            <h1>Developer: I HAVE REST!!</h1>
+        </section>
+
+        <section class="slide">
+            <h1>Fielding: No you don't</h1>
+        </section>
+
+        <section class="slide">
+            <h2>Hypermedia as the engine of application state (HATEOAS)</h2>
+            <pre><code class="http">GET /articles HTTP/1.1
+Host: api.vg.no
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:18.0) Gecko/20100101 Firefox/18.0 FirePHP/0.7.1</code></pre>
+            <hr>
+            <pre><code class="http">HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+Allow: GET, PUT, POST, DELETE</code></pre>
+            <pre><code class="HTML">&lt;html lang="en">
+&lt;head>
+  &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  &lt;title>List of articles&lt;/title>
+&lt;/head>
+&lt;body>
+  &lt;ul>
+    &lt;li>&lt;a href="http://api.vg.no/articles/123">Blaster Master&lt;/a> (&lt;a href="http://api.vg.no/categories/spill">spill&lt;/a>)&lt;/li>
+    &lt;li>&lt;a href="http://api.vg.no/articles/1234">Kurt Maflin does a 147&lt;/a> (&lt;a href="http://api.vg.no/categories/sport">sport&lt;/a>)&lt;/li>
+  &lt;/ul>
+&lt;/body>
+&lt;/html></code></pre>
+        </section>
+
+        <section class="slide">
+            <h2>Hypermedia as the engine of application state (HATEOAS)</h2>
+            <ul>
+                <li>Provide links and information about other resources and operations</li>
+                <li>Use link relations (<a href="http://www.iana.org/assignments/link-relations/link-relations.xml">IANA Link Relations</a>)</li>
+                <li>Provide a fixed URL for clients to start with</li>
+                <li>No fixed endpoints (except the one mentioned above) making it easier to change implementation of server part</li>
+            </ul>
+        </section>
+
+        <section class="slide">
+            <h2>Hypermedia formats</h2>
+            <ul>
+                <li>XML and JSON are serializations, not hypermedia formats</li>
+                <li>(X)HTML and Atom are both hypermedia formats</li>
+                <li>Custom media types can be used:
+                    <pre><code class="http">GET /articles/123 HTTP/1.1
+Host: api.vg.no
+Accept: application/vnd.vg+xml</code></pre>
+                    <hr>
+                    <pre><code class="http">HTTP/1.1 200 OK
+Content-Type: application/vnd.vg+xml; charset=utf-8
+Allow: GET, PUT, DELETE</code></pre>
+                    <pre><code class="XML">&lt;?xml version="1.0" encoding="utf-8"?>
+&lt;article xmlns="urn:vg.articles" xmlns:atom="http://www.w3.org/2005/Atom">
+  &lt;id>123&lt;/id>
+  &lt;category id="1349" href="http://api.vg.no/categories/1349">Spill&lt;/category>
+  &lt;title lang="no">Blaster Master&lt;/title>
+  &lt;price currency="NOK">15&lt;/price>
+  &lt;atom:link rel="payment" type="application/vnd.vg+xml" href="http://api.vg.no/articles/123/payment"/>
+&lt;/article>
+</code></pre>
+                </li>
+            </ul>
+        </section>
+
+        <section class="slide">
+            <h2>XML vs JSON</h2>
+            <pre><code class="XML">&lt;?xml version="1.0" encoding="utf-8"?>
+&lt;article xmlns="urn:vg.articles" xmlns:atom="http://www.w3.org/2005/Atom">
+  &lt;id>123&lt;/id>
+  &lt;title>Blaster Master&lt;/title>
+  &lt;price>15&lt;/price>
+  &lt;atom:link rel="payment" type="application/vnd.vg+xml" href="http://api.vg.no/articles/123/payment"/>
+&lt;/article>
+</code></pre>
+            <hr>
+            <pre><code class="json">{
+  "id": 123,
+  "title": "Blaster Master",
+  "price": 15,
+  "links": [
+    {
+      "rel": "payment",
+      "type": "application/vnd.vg+xml",
+      "href": "http://api.vg.no/articles/123/payment"
+    }
+  ]
+}</code></pre>
+        </section>
+
+        <section class="slide">
+            <h2>XML vs JSON</h2>
+            <p>Later on, extend some elements, and break a bunch of stuff while you're at it:</p>
+            <pre><code class="XML">&lt;price>15&lt;/price></code></pre>
+            <pre><code class="XML">&lt;price currency="NOK">15&lt;/price></code></pre>
+            <hr>
+            <pre><code class="json">{
+  "price": 15
+}</code></pre>
+            <pre><code class="json">{
+  "price": {
+    "currency": "NOK",
+    "amount": 15
+  }
+}</code></pre>
+        </section>
+
+        <section class="slide">
+            <h2>API versioning</h2>
+            <h3>Specify version in the URL</h3>
+            <ul>
+                <li>http://api.vg.no/v1/articles/123</li>
+                <li>http://api.vg.no/v2/articles/123</li>
+            </ul>
+            <p>Different URLs, same resource != awesomesauce</p>
+            <h3>Secret awesomesauce ingredient: Media types</h3>
+            <ul>
+                <li>application/vnd.vg.articles+xml</li>
+                <li>application/vnd.vg.articles.v1+xml</li>
+                <li>application/vnd.vg.articles.v2+xml</li>
+            </ul>
+        </section>
+
+        <section class="slide">
+            <h2>Why bother?</h2>
+            <ul>
+                <li>Easy to evolve without breaking clients (Don't hate the HATEOAS!)</li>
+                <li>API's are self documenting</li>
+                <li>Caching and load balancing</li>
+                <li>Conditional requests (If-Modified-Since, If-Unmodified-Since, If-Match, If-None-Match, or If-Range)</li>
+                <li>Partial requests (Range)</li>
+                <li>Scalable</li>
+            </ul>
+        </section>
+
+        <section class="slide">
+            <h2>Further reading</h2>
+            <ul>
+                <li><a href="http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm">Architectural Styles and the Design of Network-based Software Architectures (Chapter 5)</a></li>
+                <li><a href="http://www.w3.org/Protocols/rfc2616/rfc2616.html">RFC 2616 - HTTP/1.1</a></li>
+                <li><a href="http://en.wikipedia.org/wiki/REST">REST (Wikipedia)</a></li>
+                <li><a href="http://en.wikipedia.org/wiki/HATEOAS">HATEOAS (Wikipedia)</a></li>
+            </ul>
+        </section>
+
+        <a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+        <a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+        <p class="deck-status">
+            Slide <span class="deck-status-current"></span>
+            of
+            <span class="deck-status-total"></span>
+        </p>
+
+        <a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+    </article>
+
+    <footer>
+        <p>Christer Edvartsen &ndash; TechSjokk, January 2013</p>
+    </footer>
+
+    <script src="../deck/jquery-1.7.2.min.js"></script>
+
+    <!-- Deck Core and extensions -->
+    <script src="../deck/core/deck.core.js"></script>
+    <script src="../deck/extensions/hash/deck.hash.js"></script>
+    <script src="../deck/extensions/status/deck.status.js"></script>
+    <script src="../deck/extensions/navigation/deck.navigation.js"></script>
+    <script src="../deck/modernizr.custom.js"></script>
+    <script src="../highlight.js/highlight.pack.js"></script>
+    <script src="../init.js"></script>
+</body>
+</html>

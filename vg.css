@@ -1,0 +1,77 @@
+@import url('deck/themes/style/swiss.css');
+
+body {
+  background: transparent url('bg_top.jpg') repeat-x left top;
+}
+.deck-container {
+  background: transparent url('bg_bottom.jpg') repeat-x left bottom;
+  font-size: 1em;
+}
+.deck-container .slide {
+  background: transparent;
+}
+.deck-container .slide pre {
+  padding: 0;
+  margin-bottom: 0;
+  border: 0px;
+}
+.deck-container .slide pre code {
+  padding: .5em;
+  font-size: .9em;
+}
+.deck-container .slide h1 {
+  top: 40%;
+  font-size: 3em;
+}
+.deck-container .slide h2 {
+  color: #e00b04;
+}
+.deck-container .slide ::-moz-selection {
+  background: #e00b04;
+}
+.deck-container .slide ::selection {
+  background: #e00b04;
+}
+.deck-container .slide a, .deck-container .slide a:hover, .deck-container .slide a:focus, .deck-container .slide a:active, .deck-container .slide a:visited {
+  color: #e00b04;
+}
+.deck-container .deck-prev-link:hover, .deck-container .deck-prev-link:focus, .deck-container .deck-next-link:hover, .deck-container .deck-next-link:focus {
+  background: #e00b04;
+}
+.deck-container .deck-status {
+  bottom: 40px;
+  right: 25px;
+}
+.deck-container .deck-status-current,
+.deck-container .deck-status-total {
+  font-weight: bold;
+}
+#logo {
+  position: absolute;
+  bottom: 15px;
+  left: 20px;
+  z-index: 10;
+}
+footer {
+  position: absolute;
+  width: 100%;
+  bottom: 40px;
+  color: #888;
+}
+footer p {
+  margin: 0;
+  text-align: center;
+}
+.deck-container .slide table thead tr th {
+  border-bottom: 1px solid #000;
+}
+.deck-container .slide table tbody tr td {
+  padding: 1em;
+  border-top: 1px solid #ddd;
+}
+.deck-container .nowrap {
+  white-space: nowrap;
+}
+.deck-container .slide table tbody tr:nth-child(2n+2) td {
+  background: #f7f7f7;
+}
