@@ -50,7 +50,7 @@
         <section class="slide">
             <h2>The uniform interface</h2>
             <ul>
-                <li><strong>Identification of resources</strong> - <em>conceptually separate from the representations</em></li>
+                <li><strong>Identification of resources</strong> - <em>Conceptually separate from the representations</em></li>
                 <li><strong>Manipulation of resources</strong> - <em>Clients can modify/delete resources if it has permission to do so</em></li>
                 <li><strong>Self-descriptive messages</strong> - <em>Enough information is included in the response to make the client know how to process it</em></li>
                 <li><strong>Hypermedia as the engine of application state (HATEOAS)</strong> - <em>The responses contain information on how to further use the interface, for instance by using hyperlinks within hypertext</em></li>
@@ -62,7 +62,7 @@
             <p>A collection of resources, with four defined aspects:</p>
             <ul>
                 <li>A base URI for the web service</li>
-                <li>One or more media types that can represent the resources (for instance application/xml or application/json)</li>
+                <li>One or more media types that can represent the resources</li>
                 <li>The operations supported (for instance GET, PUT, POST, or DELETE)</li>
                 <li>Hypertext driven API (HATEOAS)</li>
             </ul>
@@ -146,6 +146,16 @@ Allow: GET, PUT, POST, DELETE</code></pre>
 
         <section class="slide">
             <h2>Hypermedia as the engine of application state (HATEOAS)</h2>
+            <ul>
+                <li>Provide links and information about other resources and operations</li>
+                <li>Use link relations (<a href="http://www.iana.org/assignments/link-relations/link-relations.xml">IANA Link Relations</a>)</li>
+                <li>Provide a fixed URL for clients to start with</li>
+                <li>No fixed endpoints (except the one mentioned above) making it easier to change implementation of server part</li>
+            </ul>
+        </section>
+
+        <section class="slide">
+            <h2>Hypermedia as the engine of application state (HATEOAS)</h2>
             <pre><code class="http">GET /articles HTTP/1.1
 Host: api.vg.no
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
@@ -166,16 +176,6 @@ Allow: GET, PUT, POST, DELETE</code></pre>
   &lt;/ul>
 &lt;/body>
 &lt;/html></code></pre>
-        </section>
-
-        <section class="slide">
-            <h2>Hypermedia as the engine of application state (HATEOAS)</h2>
-            <ul>
-                <li>Provide links and information about other resources and operations</li>
-                <li>Use link relations (<a href="http://www.iana.org/assignments/link-relations/link-relations.xml">IANA Link Relations</a>)</li>
-                <li>Provide a fixed URL for clients to start with</li>
-                <li>No fixed endpoints (except the one mentioned above) making it easier to change implementation of server part</li>
-            </ul>
         </section>
 
         <section class="slide">
