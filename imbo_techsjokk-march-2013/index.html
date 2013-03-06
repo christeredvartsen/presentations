@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+
+		<title>Imbo - Image Box</title>
+
+        <meta name="description" content="Imbo (Image box) is an image server that can be used to add/get/delete images using a RESTful interface">
+		<meta name="author" content="Christer Edvartsen">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+        <link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+        <style>
+            .reveal section img { border: 0; }
+        </style>
+	</head>
+
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+				<section>
+					<img src="http://demo.imbo-project.org/users/imbo/images/748ac5c3f937f8d09877887743418908?accessToken=faa23c8e358668dd4dbd2766d8a800fd4202a8629acc3fb7db4133d04cb3f6e5" alt="Imbo logo">
+                    <h1>Imbo - Image Box</h1>
+					<p>
+						<small>Created by <a href="https://github.com/christeredvartsen">Christer Edvartsen</a> / <a href="http://twitter.com/cogocogo">@cogocogo</a></small>
+					</p>
+				</section>
+
+				<section>
+                    <section>
+                        <h2>WAT</h2>
+                        <p>Imbo is an image "server" that can be used to add/get/delete images using a RESTful-ish HTTP API. Imbo also supports adding meta data to images.</p>
+                        <p>Imbo will resize, rotate, crop (amongst other transformations) on the fly so you won't have to store all the different variations.</p>
+                    </section>
+                    <section>
+                        <ul>
+                            <li>Written in PHP</li>
+                            <li>MIT license</li>
+                            <li>Follows the HTTP/1.1 standard<ul>
+                                <li>Uses ETag and Last-Modified response headers for private caches</li>
+                                <li>Uses Cache-Control response headers for public caches</li>
+                            </ul></li>
+                            <li>Can be exented via event listeners</li>
+                            <li>Fully <a href="http://ci.starzinger.net/job/Imbo/Code_Coverage/">tested</a> and <a href="http://docs.imbo-project.org/en/latest/">documented</a></li>
+                        </ul>
+                    </section>
+				</section>
+
+				<section>
+				    <section>
+                        <h2>Add an image</h2>
+                        <pre><code class="language-bash">curl -XPUT http://&lt;host&gt;/users/&lt;user&gt;/images/&lt;image&gt; \
+--data-binary @&lt;file&gt;</code></pre>
+				    </section>
+				    <section>
+                        <h2>Delete an image</h2>
+                        <pre><code class="language-bash">curl -XDELETE http://&lt;host&gt;/users/&lt;user&gt;/images/&lt;image&gt;</code></pre>
+				    </section>
+				    <section>
+                        <h2>Set metadata</h2>
+                        <pre><code class="language-bash">curl -XPUT http://&lt;host&gt;/users/&lt;user&gt;/images/&lt;image&gt;/meta -d '{
+   "brewery": "Nøgne Ø",
+   "beer": "India Pale Ale",
+   "abv": "7.5%"
+}'</code></pre>
+				    </section>
+				    <section>
+                        <h2>Partially update metadata</h2>
+                        <pre><code class="language-bash">curl -XPOST http://&lt;host&gt;/users/&lt;user&gt;/images/&lt;image&gt;/meta -d '{
+   "score": "99/100"
+}'</code></pre>
+				    </section>
+				    <section>
+                        <h2>Delete metadata</h2>
+                        <pre><code class="language-bash">curl -XDELETE http://&lt;host&gt;/users/&lt;user&gt;/images/&lt;image&gt;/meta</code></pre>
+				    </section>
+				</section>
+
+				<section>
+                    <section>
+                        <h2>Image transformations</h2>
+                        <ul>
+                            <li>Triggered via query parameters</li>
+                            <li>Can be chained</li>
+                            <li>Protected against DDoS by an event listener</li>
+                            <li>Can be cached server-side by en event listener</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2>Original image</h2>
+                        <img src="http://demo.imbo-project.org/users/imbo/images/d81d67aeab8f398899936ade899a79f6?accessToken=a09c1e81721611864d3293db0adec04b57d564ffd3a6b3cca4732ed2a723a805">
+                    </section>
+
+                    <section>
+                        <p>?t[]=resize:width=200</p>
+                        <img src="http://demo.imbo-project.org/users/imbo/images/d81d67aeab8f398899936ade899a79f6?t[]=resize%3Awidth%3D200&accessToken=f2699b67037eb12e5e9dc5fcc915993610320ec81e9e118cb0ed3823115a0b29">
+                    </section>
+
+                    <section>
+                        <p>?t[]=resize:width=200,height=100</p>
+                        <img src="http://demo.imbo-project.org/users/imbo/images/d81d67aeab8f398899936ade899a79f6?t[]=resize%3Awidth%3D200%2Cheight%3D100&accessToken=4225a098de811cc04da1f179095610f1ee53410477245fe63b866d890a7d6a7d">
+                    </section>
+
+                    <section>
+                        <p>?t[]=thumbnail</p>
+                        <img class="demo" src="http://demo.imbo-project.org/users/imbo/images/d81d67aeab8f398899936ade899a79f6?t[]=thumbnail%3Awidth%3D50%2Cheight%3D50%2Cfit%3Doutbound&accessToken=478d729f7bb658ae9e1c4dc295fccc5f5f5a407fbc086205b511be3699917152">
+                    </section>
+
+                    <section>
+                        <p>?t[]=crop:x=128,y=0,width=256,height=256</p>
+                        <img src="http://demo.imbo-project.org/users/imbo/images/d81d67aeab8f398899936ade899a79f6?t[]=crop%3Ax%3D128%2Cy%3D0%2Cwidth%3D256%2Cheight%3D256&accessToken=e803909fdb151ee57f5c65ec924cc1bd36c05d46a8f3ad449127a86c593e26aa">
+                    </section>
+
+                    <section>
+                        <p>?t[]=desaturate</p>
+                        <img src="http://demo.imbo-project.org/users/imbo/images/d81d67aeab8f398899936ade899a79f6?t[]=desaturate&accessToken=eea58883ec373e072dcb2548d30d5fff0f0de75aca694752fc3602f3b286a814">
+                    </section>
+
+                    <section>
+                        <p>?t[]=flipHorizontally&amp;t[]=flipVertically</p>
+                        <img src="http://demo.imbo-project.org/users/imbo/images/d81d67aeab8f398899936ade899a79f6?t[]=flipHorizontally&t[]=flipVertically&accessToken=f70f493c3961f78c6abac4e56bc7f339ce0eef011f11f137f160692bc91d0b35">
+                    </section>
+
+                    <section>
+                        <p>?t[]=rotate:angle=45,bg=black</p>
+                        <img src="http://demo.imbo-project.org/users/imbo/images/d81d67aeab8f398899936ade899a79f6?t[]=rotate%3Aangle%3D45%2Cbg%3Dblack&accessToken=07c2d9ce5eb744bb0ed6becde34a0eb47568abacbc43a1c8fd7271a6d1e26122">
+                    </section>
+
+                    <section>
+                    <p><small>?t[]=resize:width=200&amp;t[]=desaturate<br>&amp;t[]=border:color=#225D10,width=15,height=15<br>&amp;t[]=border:color=#588E00,width=15,height=15<br>&amp;t[]=border:color=#95C400,width=15,height=15<br>&amp;t[]=border:color=#225D10,width=15,height=15</small></p>
+                        <img src="http://demo.imbo-project.org/users/imbo/images/d81d67aeab8f398899936ade899a79f6?t[]=resize%3Awidth%3D200&t[]=desaturate&t[]=border%3Acolor%3D%23225D10%2Cwidth%3D15%2Cheight%3D15&t[]=border%3Acolor%3D%23588E00%2Cwidth%3D15%2Cheight%3D15&t[]=border%3Acolor%3D%2395C400%2Cwidth%3D15%2Cheight%3D15&t[]=border%3Acolor%3D%23225D10%2Cwidth%3D15%2Cheight%3D15&accessToken=342e381f6cb67ca92dac247fe2b382275207f6a06922e16fbd4cec485baca57e">
+                    </section>
+				</section>
+                <section>
+                    <section>
+                        <h2>Server configuration</h2>
+                        <ul>
+                            <li>Plain old PHP</li>
+                            <li>Override default behaviour</li>
+                            <li>Enable custom event listeners</li>
+                            <li>Create transformation presets</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Users</h3>
+                        <pre><code class="php">&lt;?php
+return array(
+    'auth' => array(
+        'publickey' => 'privatekey',
+        'someotherkey' => 'someotherprivatekey',
+    ),
+);</code></pre>
+                        <pre><code class="php">&lt;?php
+$pdo = new PDO('dsn', 'user', 'password');
+$sql = "SELECT publicKey, privateKey FROM imbo_users";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$auth = $stmt->fetchAll(PDO::FETCH_COLUMN | PDO::FETCH_UNIQUE);
+
+return array(
+    'auth' => $auth,
+);</code></pre>
+                    </section>
+                    <section>
+                        <h3>Event listeners</h3>
+                        <p>Can be specified via a simple closure</p>
+                        <pre><code class="php"><small>&lt;?php
+return array(
+    'eventListeners' => array(
+        'acceptLogger' => array(
+            'callback' => function($event) {
+                $headers = $event->getRequest()->getHeaders();
+                $userAgent = $headers->get('user-agent') ?: 'no user agent';
+                $accept = $headers->get('accept') ?: 'no accept headers';
+
+                $logPath = '/tmp/imbo_accept_logging';
+                $logLine = $userAgent . PHP_EOL . $accept . PHP_EOL . PHP_EOL;
+
+                file_put_contents($logPath, $logLine, FILE_APPEND);
+            },
+            'events' => array('image.get'),
+        ),
+    ),
+);
+</small></code></pre>
+                    </section>
+
+                    <section>
+                        <h3>Event listeners</h3>
+                        <p>or by implementing the <em>Imbo\EventListener\ListenerInterface</em> interface:</p>
+                        <pre><code class="php">&lt;?php
+namespace Imbo\EventListener;
+
+class CustomListener implements ListenerInterface {
+    // ...
+}
+
+return array(
+    'eventListeners' => array(
+        'myListener' => new CustomListener(),
+    ),
+);
+</code></pre>
+                    </section>
+
+                    <section>
+                        <h3>Event listeners</h3>
+                        <p>Disable default event listeners for easier debugging when developing/testing</p>
+                        <pre><code class="php">&lt;?php
+return array(
+    'eventListeners' => array(
+        'auth' => null,
+        'accessToken' => null,
+    ),
+);
+</code></pre>
+                    </section>
+
+                    <section>
+                        <h3>Transformation presets</h3>
+                        <p>Create a preset for a collection of transformations</p>
+                        <pre><code class="php">&lt;?php
+namespace Imbo\Image\Transformation;
+
+return array(
+    'imageTransformations' => array(
+        'graythumb' => function (array $params) {
+            return new Collection(array(
+                new Desaturate(),
+                new Thumbnail($params),
+            ));
+        },
+    ),
+);
+</code></pre>
+                        <p>Triggered via <em>?t[]=graythumb</em></p>
+                    </section>
+
+                    <section>
+                        <h3>Disable transformations</h3>
+                        <pre><code class="php">&lt;?php
+return array(
+    'imageTransformations' => array(
+        'resize' => null,
+        'transpose' => null,
+        'transverse' => null,
+    ),
+);
+</code></pre>
+                    </section>
+                </section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+		</script>
+	</body>
+</html>
