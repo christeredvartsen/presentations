@@ -28,6 +28,10 @@
 
         <style>
             .reveal section img { border: 0; }
+            span.i { color: #225D10; }
+            span.m { color: #588E00; }
+            span.b { color: #95C400; }
+            span.o { color: #225D10; }
         </style>
 	</head>
 
@@ -38,9 +42,7 @@
 				<section>
 					<img src="http://demo.imbo-project.org/users/imbo/images/748ac5c3f937f8d09877887743418908?accessToken=faa23c8e358668dd4dbd2766d8a800fd4202a8629acc3fb7db4133d04cb3f6e5" alt="Imbo logo">
                     <h1>Imbo - Image Box</h1>
-					<p>
-						<small>Created by <a href="https://github.com/christeredvartsen">Christer Edvartsen</a> / <a href="http://twitter.com/cogocogo">@cogocogo</a></small>
-					</p>
+					<p><small>TechSjokk, March 2013 &ndash; <a href="https://github.com/christeredvartsen">Christer Edvartsen</a></small></p>
 				</section>
 
 				<section>
@@ -52,10 +54,12 @@
                     <section>
                         <ul>
                             <li>Written in PHP</li>
+                            <li>Open source</li>
                             <li>MIT license</li>
-                            <li>Follows the HTTP/1.1 standard<ul>
-                                <li>Uses ETag and Last-Modified response headers for private caches</li>
-                                <li>Uses Cache-Control response headers for public caches</li>
+                            <li>Follows the HTTP/1.1 protocol (<a href="http://www.w3.org/Protocols/rfc2616/rfc2616.html">RFC 2616</a>)<ul>
+                                <li>Uses ETag, Last-Modified and Cache-Control headers for public and private caches</li>
+                                <li>Supports content negotiation</li>
+                                <li>Leverage HTTP response codes</li>
                             </ul></li>
                             <li>Can be exented via event listeners</li>
                             <li>Fully <a href="http://ci.starzinger.net/job/Imbo/Code_Coverage/">tested</a> and <a href="http://docs.imbo-project.org/en/latest/">documented</a></li>
@@ -68,10 +72,18 @@
                         <h2>Add an image</h2>
                         <pre><code class="language-bash">curl -XPUT http://&lt;host&gt;/users/&lt;user&gt;/images/&lt;image&gt; \
 --data-binary @&lt;file&gt;</code></pre>
+                        <p>Response:</p>
+                        <pre><code class="language-json">{
+    "imageIdentifier": "&lt;identifier>"
+}</code></pre>
 				    </section>
 				    <section>
                         <h2>Delete an image</h2>
                         <pre><code class="language-bash">curl -XDELETE http://&lt;host&gt;/users/&lt;user&gt;/images/&lt;image&gt;</code></pre>
+                        <p>Response:</p>
+                        <pre><code class="language-json">{
+    "imageIdentifier": "&lt;image>"
+}</code></pre>
 				    </section>
 				    <section>
                         <h2>Set metadata</h2>
@@ -80,16 +92,39 @@
    "beer": "India Pale Ale",
    "abv": "7.5%"
 }'</code></pre>
+                        <p>Response:</p>
+                        <pre><code class="language-json">{
+    "imageIdentifier": "&lt;image>"
+}</code></pre>
 				    </section>
 				    <section>
                         <h2>Partially update metadata</h2>
                         <pre><code class="language-bash">curl -XPOST http://&lt;host&gt;/users/&lt;user&gt;/images/&lt;image&gt;/meta -d '{
    "score": "99/100"
 }'</code></pre>
+                        <p>Response:</p>
+                        <pre><code class="language-json">{
+    "imageIdentifier": "&lt;image>"
+}</code></pre>
+				    </section>
+				    <section>
+                        <h2>Fetch metadata</h2>
+                        <pre><code class="language-bash">curl http://&lt;host&gt;/users/&lt;user&gt;/images/&lt;image&gt;/meta</code></pre>
+                        <p>Response:</p>
+                        <pre><code class="language-json">{
+   "brewery": "Nøgne Ø",
+   "beer": "India Pale Ale",
+   "abv": "7.5%",
+   "score": "99/100"
+}</code></pre>
 				    </section>
 				    <section>
                         <h2>Delete metadata</h2>
                         <pre><code class="language-bash">curl -XDELETE http://&lt;host&gt;/users/&lt;user&gt;/images/&lt;image&gt;/meta</code></pre>
+                        <p>Response:</p>
+                        <pre><code class="language-json">{
+    "imageIdentifier": "&lt;image>"
+}</code></pre>
 				    </section>
 				</section>
 
@@ -149,6 +184,48 @@
                         <img src="http://demo.imbo-project.org/users/imbo/images/d81d67aeab8f398899936ade899a79f6?t[]=resize%3Awidth%3D200&t[]=desaturate&t[]=border%3Acolor%3D%23225D10%2Cwidth%3D15%2Cheight%3D15&t[]=border%3Acolor%3D%23588E00%2Cwidth%3D15%2Cheight%3D15&t[]=border%3Acolor%3D%2395C400%2Cwidth%3D15%2Cheight%3D15&t[]=border%3Acolor%3D%23225D10%2Cwidth%3D15%2Cheight%3D15&accessToken=342e381f6cb67ca92dac247fe2b382275207f6a06922e16fbd4cec485baca57e">
                     </section>
 				</section>
+				<section>
+                    <section>
+                        <h2>Supports several resource representations out of the box</h2>
+                        <ul>
+                            <li>application/json</li>
+                            <li>application/xml</li>
+                            <li>text/html</li>
+                            <li>image/jpeg</li>
+                            <li>image/png</li>
+                            <li>image/gif</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Best match based on the Accept header</h2>
+                        <pre><code class="language-http">GET /users/&lt;user>/images/&lt;image> HTTP/1.1
+Host: imbo.vg.no
+Accept: image/jpeg,image/png;q=0.9,image/*;q=0.5,*/*;q=0.1</code></pre>
+                        <pre><code class="language-http">HTTP/1.1 200 OK
+Allow: GET, HEAD, DELETE, PUT
+Cache-Control: max-age=31536000, public
+Content-Type: image/jpeg
+Date: Thu, 07 Mar 2013 19:01:31 GMT
+ETag: "700deaf520ebdf1c0c060ecda0fb84d9"
+Last-Modified: Mon, 04 Mar 2013 21:11:26 GMT
+Vary: Accept
+
+&lt;binary data></code></pre>
+                    </section>
+                    <section>
+                        <h2>Use the RFC, Imbo!</h2>
+                        <pre><code class="language-http">GET /users/&lt;user>/images/&lt;image> HTTP/1.1
+Host: imbo.vg.no
+Accept: Accept: image/jpeg,image/png;q=0.9,image/*;q=0.5,*/*;q=0.1
+If-Modified-Since: Mon, 04 Mar 2013 21:11:26 GMT
+If-None-Match: "700deaf520ebdf1c0c060ecda0fb84d9"</code></pre>
+                        <pre><code class="language-http">HTTP/1.1 304 Not Modified
+Cache-Control: max-age=31536000, public
+Date: Thu, 07 Mar 2013 19:12:17 GMT
+ETag: "700deaf520ebdf1c0c060ecda0fb84d9"
+Vary: Accept</code></pre>
+                    </section>
+                </section>
                 <section>
                     <section>
                         <h2>Server configuration</h2>
@@ -266,6 +343,61 @@ return array(
 );
 </code></pre>
                     </section>
+                </section>
+                <section>
+                    <section>
+                        <h2>Clients</h2>
+                        <ul>
+                            <li>PHP</li>
+                            <li>CLI (PHP wrapper)</li>
+                            <li>JavaScript</li>
+                            <li>Python and Ruby will follow</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>PHP - Add image</h2>
+                        <pre><code class="language-php">&lt;?php
+$client = new ImboClient\Client($host, $publicKey, $privateKey);
+$response = $client->addImage('/path/to/image.jpg');
+$imageIdentifier = $response->getImageIdentifier();
+echo $imageIdentifier; // 46ec531c99ea6f0b5d64374744f26151</code></pre>
+                    </section>
+                    <section>
+                        <h2>PHP - Delete image</h2>
+                        <pre><code class="language-php">&lt;?php
+$client = new ImboClient\Client($host, $publicKey, $privateKey);
+$response = $client->deleteImage($imageIdentifier);</code></pre>
+                    </section>
+                    <section>
+                        <h2>PHP - Generate URLs</h2>
+                        <pre><code class="language-php">&lt;?php
+$client = new ImboClient\Client($host, $publicKey, $privateKey);
+$imageUrl = $client->getImageUrl($imageIdentifier);
+
+// Generate URL to an image, including access token
+echo $client->getImageUrl($imageIdentifier)
+                ->resize(200, 100)
+                ->border()
+                ->jpg();
+
+// Generate URL to the user, including access token
+echo $client->getUserUrl();
+
+// Generate URL to the imags of the user, including access token
+echo $client->getImagesUrl();</code></pre>
+                    </section>
+                </section>
+                <section>
+                    <h2>Links and stuff</h2>
+                    <ul>
+                        <li><a href="https://github.com/imbo">https://github.com/imbo</a></li>
+                        <li><a href="http://imbo-project.org">http://imbo-project.org</a></li>
+                        <li><a href="http://docs.imbo-project.org">http://docs.imbo-project.org</a></li>
+                        <li><a href="https://packagist.org/packages/imbo/">https://packagist.org/packages/imbo</a></li>
+                    </ul>
+                </section>
+                <section>
+                <h1><span class="i">T</span><span class="m">h</span><span class="b">e</span> <span class="o">e</span><span class="i">n</span><span class="m">d</span><span class="b">.</span></h1>
                 </section>
 			</div>
 		</div>
