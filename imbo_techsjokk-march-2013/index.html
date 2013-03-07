@@ -386,6 +386,47 @@ echo $client->getUserUrl();
 // Generate URL to the imags of the user, including access token
 echo $client->getImagesUrl();</code></pre>
                     </section>
+                    <!-- JS -->
+                    <section>
+                        <h2>JS - Install (node.js)</h2>
+                        <pre>npm install imbo-client</pre>
+                    </section>
+
+                    <section>
+                        <h2>JS - Add image</h2>
+                        <pre><code class="language-js">var imbo = require('imbo-client');
+
+var client = new Imbo.Client(host, publicKey, privateKey);
+
+client.addImage('/path/to/image.jpg', function(err, imageIdentifier) {
+    console.log(imageIdentifier); // 46ec531c99ea6f0b5d64374744f26151
+});
+</code></pre>
+                    </section>
+                    <section>
+                        <h2>JS - Delete image</h2>
+                        <pre><code class="language-js">var imbo = require('imbo-client');
+
+var client = new Imbo.Client(host, publicKey, privateKey);
+
+client.deleteImageByIdentifier(imageIdentifier);</code></pre>
+                    </section>
+                    <section>
+                        <h2>JS - Generate URLs</h2>
+                        <pre><code class="language-js">var imbo = require('imbo-client');
+
+var client = new Imbo.Client(host, publicKey, privateKey);
+var imageUrl = client.getImageUrl(imageIdentifier);
+
+// Generate URL to an image, including access token
+console.log(client.getImageUrl(imageIdentifier)
+                  .resize(200, 100)
+                  .border()
+                  .jpg()
+           );
+</code></pre>
+                    </section>
+                    <!-- End JS -->
                 </section>
                 <section>
                     <h2>Links and stuff</h2>
