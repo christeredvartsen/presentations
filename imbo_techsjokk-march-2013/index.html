@@ -233,8 +233,17 @@ Vary: Accept</code></pre>
                         <ul>
                             <li>Plain old PHP</li>
                             <li>Override default behaviour</li>
-                            <li>Enable custom event listeners</li>
-                            <li>Create transformation presets</li>
+                            <li>Custom event listeners</li>
+                            <li>Transformation presets</li>
+                            <li>Choose between storage backends:<ul>
+                                <li>GridFS (default)</li>
+                                <li>Filesystem</li>
+                                <li>Doctrine (PDO)</li>
+                            </ul></li>
+                            <li>Choose between "metadata" backends:<ul>
+                                <li>MongoDB (default)</li>
+                                <li>Doctrine (PDO)</li>
+                            </ul></li>
                         </ul>
                     </section>
                     <section>
@@ -481,11 +490,9 @@ console.log(client.getImageUrl(imageIdentifier)
 
 		<script>
             new ImboDemo({
-                /*
-                host      : 'http://some.host/imbo',
+                host      : 'http://imbo',
                 publicKey : 'demo',
                 privateKey: 'demo',
-                */
                 element: '#live-demo'
             });
 
