@@ -32,6 +32,7 @@
             span.m { color: #588E00; }
             span.b { color: #95C400; }
             span.o { color: #225D10; }
+            #live-demo .demo-url { word-break: break-word; }
         </style>
 	</head>
 
@@ -428,6 +429,35 @@ console.log(client.getImageUrl(imageIdentifier)
                     </section>
                     <!-- End JS -->
                 </section>
+                <section id="live-demo">
+                    <!-- Interactive demo -->
+                    <section>
+                        <h2>Live demo</h2>
+                        <input type="file" class="file-uploader">
+                    </section>
+                    <section class="result">
+                        <h2>Result</h2>
+                        <div class="demo-result"></div>
+                    </section>
+                    <section class="transformations">
+                        <h2>Transformations</h2>
+                        <div class="buttons">
+                            <button class="thumbnail">Thumbnail</button>
+                            <button class="maxSize">MaxSize</button>
+                            <button class="border">Border</button>
+                            <button class="crop">Crop</button>
+                            <button class="flipX">FlipX</button>
+                            <button class="flipY">FlipY</button>
+                            <button class="rotate">Rotate</button>
+                            <button class="sepia">Sepia</button>
+                            <button class="desat">Desat</button>
+                            <button class="reset">Reset</button>
+                        </div>
+                        <p><small class="demo-url"></small></p>
+                        <img src="img/blank.gif" class="result-img">
+                    </section>
+                    <!-- End interactive demo -->
+                </section>
                 <section>
                     <h2>Links and stuff</h2>
                     <ul>
@@ -445,9 +475,21 @@ console.log(client.getImageUrl(imageIdentifier)
 
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.min.js"></script>
+        <script src="js/jquery.min.js"></script>
+        <script src="js/imbo.min.js"></script>
+        <script src="js/imbo-demo.js"></script>
 
 		<script>
-			Reveal.initialize({
+            new ImboDemo({
+                /*
+                host      : 'http://some.host/imbo',
+                publicKey : 'demo',
+                privateKey: 'demo',
+                */
+                element: '#live-demo'
+            });
+
+            Reveal.initialize({
 				controls: true,
 				progress: true,
 				history: true,
@@ -465,6 +507,7 @@ console.log(client.getImageUrl(imageIdentifier)
 					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
 				]
 			});
+
 		</script>
 	</body>
 </html>
