@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Presentasjon av VG</title>
+
+		<meta name="description" content="Presentasjon av VG">
+		<meta name="author" content="Christer Edvartsen">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/sky.css" id="theme">
+        <!-- beige.css  default.css moon.css  night.css  README.md  serif.css  simple.css  sky.css  solarized.css -->
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<div class="reveal">
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+                    <h1><img src="vg-logo.jpg" width="50%" alt="Logo"></h1>
+					<h3>Presentasjon av VG</h3>
+					<p><small><a href="http://github.com/christeredvartsen">Christer Edvartsen</a> / <a href="http://twitter.com/cogocogo">@cogocogo</a></small></p>
+					<p><small><a href="http://det.digitaleselskab.org">Det Digitale Selskab</a>, 2013-10-30</small></p>
+				</section>
+
+				<section>
+					<h2>Litt om meg</h2>
+                    <p>Christer Edvartsen, seniorutvikler og devop hos VG.</p>
+                    <p>Glad i <a href="https://github.com/christeredvartsen">open source</a>, <a href="http://www.beernorway.com">øl</a> og whisky.</p>
+                    <p>Skriver hovedsaklig PHP, men også Ruby og Python.</p>
+                    <p>Jobbet i VG siden 2006, jobbet som utvikler siden 2000.</p>
+				</section>
+
+                <section>
+                    <h2>Teknologier i bruk</h2>
+                    <ul>
+                        <li><strong>(L)inux</strong></li>
+                        <li><strong>(A)pache</strong></li>
+                        <li><strong>(M)ySQL</strong></li>
+                        <li><strong>(P)HP</strong></li>
+                        <li>BIG-IP</li>
+                        <li>VMware</li>
+                        <li>Varnish</li>
+                        <li>Lighttpd</li>
+                    </ul>
+                    <ul>
+                        <li>Oracle</li>
+                        <li>MongoDB</li>
+                        <li>Memcached</li>
+                        <li>Splunk</li>
+                        <li>Chef</li>
+                        <li>ElasticSearch</li>
+                        <li>Solr</li>
+                        <li>Redis</li>
+                    </ul>
+                    <ul>
+                        <li>Newrelic</li>
+                        <li>Redis</li>
+                        <li>RabbitMQ</li>
+                        <li>Munin</li>
+                        <li>Nagios</li>
+                        <li>Perl</li>
+                        <li>Ruby</li>
+                        <li>Java</li>
+                    </ul>
+                    <ul>
+                        <li>Backbone.js</li>
+                        <li>node.js</li>
+                        <li>jQuery</li>
+                        <li>Subversion</li>
+                        <li>Git</li>
+                        <li>Sphinx</li>
+                        <li>Nginx</li>
+                        <li>Collectd</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Oversikt</h2>
+                        <ul>
+                            <li>Online siden 1995</li>
+                            <li>1.4 millioner unike brukere daglig (peak på 2.5 millioner)</li>
+                            <li>11 millioner sidevisninger daglig (peak på 61 millioner)</li>
+                            <li>3Gb/s HTTP (peak på 8Gb/s)</li>
+                            <li>20Gb/s video (peak på 146Gb/s)</li>
+                            <li>Akkurat nå: <span class="totalhits">10000</span> requests/s (peak på 100K req/s)</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Tjenester</h2>
+                        <ul>
+                            <li>Dual site med ~automatisk failover, begge aktive</li>
+                            <li>~190 maskiner (80% virtuelle)</li>
+                            <li>
+                                Tjenester:
+                                <ul>
+                                    <li>VG Nett (vg.no)</li>
+                                    <li>E24 (e24.no)</li>
+                                    <li>Dine Penger (dinepenger.no)</li>
+                                    <li>VGTV (vgtv.no)</li>
+                                    <li>VG Live (vglive.no)</li>
+                                    <li>VG Nett Debatt (vgd.no)</li>
+                                    <li>VG Livestudio (direkte.vg.no)</li>
+                                    <li>+ veldig mye mer</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Folk</h2>
+                        <ul>
+                            <li>14 utviklere, 5 designere, 4 driftere + team-ledere</li>
+                            <li>19 personer i Schibsted Tech Polska som utgjør 3 utviklingsteam</li>
+                            <li>Vi trenger fler folk!<ul>
+                                <li>Front-end/HTML5</li>
+                                <li>Android</li>
+                                <li>PHP</li></ul>
+                            </li>
+                        </ul>
+                    </section>
+                </section>
+
+                <section>
+                    <h2>Bli sett og hørt</h2>
+                    <ul>
+                        <li><a href="http://tech.vg.no">http://tech.vg.no</a> (utviklerblogg)</li>
+                        <li><a href="http://www.meetup.com/TechShock/">Vi arrangerer Meetup's</a></li>
+                        <li>Vi drar på konferanser</li>
+                    </ul>
+                </section>
+
+                <section class="slide" id="questions">
+                    <h2>Sp&oslash;rsm&aring;l?</h2>
+                </section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+		<script src="js/jquery-2.0.3.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+            $(function() {
+                function updatetotalhits() {
+                    $.ajax({
+                        url: "http://www.vg.no/match/DELIVERTOTAL/top/",
+                        dataType: "jsonp",
+                        cache: true,
+                        success: function(res) {
+                            var current = $('.totalhits').html();
+                            var updated = Math.round(res.DELIVERTOTAL / 10);
+
+                            if (current != updated) {
+                                $('.totalhits').fadeOut("slow", function() {
+                                    $(this).html(updated).fadeIn("slow");
+                                });
+                            }
+                        }
+                    });
+                }
+
+                setInterval(updatetotalhits, 3000);
+                updatetotalhits();
+            });
+
+		</script>
+
+	</body>
+</html>
