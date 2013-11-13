@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+
+		<title>Imbo lightning talk</title>
+
+		<meta name="description" content="A lightning talk about Imbo">
+		<meta name="author" content="Christer Edvartsen">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+        <style>
+            .reveal section img { border: 0; }
+            span.i { color: #225D10; }
+            span.m { color: #588E00; }
+            span.b { color: #95C400; }
+            span.o { color: #225D10; }
+            #live-demo .demo-url { word-break: break-word; }
+        </style>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<img src="http://demo.imbo-project.org/users/imbo/images/748ac5c3f937f8d09877887743418908?accessToken=faa23c8e358668dd4dbd2766d8a800fd4202a8629acc3fb7db4133d04cb3f6e5" alt="Imbo logo">
+                    <h1>Imbo - Image Box</h1>
+					<p><small>Finn Tech Day, November 2013 &ndash; <a href="https://github.com/christeredvartsen">Christer Edvartsen</a></small></p>
+				</section>
+
+				<section>
+                    <section>
+                        <h2>WAT</h2>
+                        <p>Imbo is an image "server" that can be used to add/get/delete images using a RESTful-ish HTTP API. Imbo also supports adding meta data to images.</p>
+                        <p>Imbo will resize, rotate, crop (amongst other transformations) on the fly so you won't have to store all the different variations.</p>
+                    </section>
+
+                    <section>
+                        <ul>
+                            <li>Written in PHP</li>
+                            <li>Open source</li>
+                            <li>MIT license</li>
+                            <li>Follows the HTTP/1.1 protocol (<a href="http://www.w3.org/Protocols/rfc2616/rfc2616.html">RFC 2616</a>)<ul>
+                                <li>Uses ETag, Last-Modified and Cache-Control headers for public and private caches</li>
+                                <li>Supports content negotiation</li>
+                                <li>Leverage HTTP response codes</li>
+                            </ul></li>
+                            <li>Can be extended via event listeners</li>
+                            <li>Fully <a href="http://ci.starzinger.net/job/Imbo/Code_Coverage/">tested</a> and <a href="http://docs.imbo-project.org/en/latest/">documented</a></li>
+                        </ul>
+                    </section>
+				</section>
+
+				<section>
+				    <section>
+                        <h2>Add an image</h2>
+                        <pre><code class="language-bash">curl -XPUT http://&lt;host&gt;/users/&lt;user&gt;/images/&lt;image&gt; \
+--data-binary @&lt;file&gt;</code></pre>
+                        <p>Response:</p>
+                        <pre><code class="language-json">{
+    "imageIdentifier": "&lt;identifier>"
+}</code></pre>
+				    </section>
+
+				    <section>
+                        <h2>Delete an image</h2>
+                        <pre><code class="language-bash">curl -XDELETE http://&lt;host&gt;/users/&lt;user&gt;/images/&lt;image&gt;</code></pre>
+                        <p>Response:</p>
+                        <pre><code class="language-json">{
+    "imageIdentifier": "&lt;image>"
+}</code></pre>
+				    </section>
+
+				    <section>
+                        <h2>Set metadata</h2>
+                        <pre><code class="language-bash">curl -XPUT http://&lt;host&gt;/users/&lt;user&gt;/images/&lt;image&gt;/meta -d '{
+    "brewery": "Nøgne Ø",
+    "beer": "India Pale Ale",
+    "abv": "7.5%"
+}'</code></pre>
+                        <p>Response:</p>
+                        <pre><code class="language-json">{
+    "imageIdentifier": "&lt;image>"
+}</code></pre>
+				    </section>
+
+				    <section>
+                        <h2>Partially update metadata</h2>
+                        <pre><code class="language-bash">curl -XPOST http://&lt;host&gt;/users/&lt;user&gt;/images/&lt;image&gt;/meta -d '{
+    "score": "99/100"
+}'</code></pre>
+                        <p>Response:</p>
+                        <pre><code class="language-json">{
+    "imageIdentifier": "&lt;image>"
+}</code></pre>
+				    </section>
+
+				    <section>
+                        <h2>Fetch metadata</h2>
+                        <pre><code class="language-bash">curl http://&lt;host&gt;/users/&lt;user&gt;/images/&lt;image&gt;/meta</code></pre>
+                        <p>Response:</p>
+                        <pre><code class="language-json">{
+    "brewery": "Nøgne Ø",
+    "beer": "India Pale Ale",
+    "abv": "7.5%",
+    "score": "99/100"
+}</code></pre>
+				    </section>
+
+				    <section>
+                        <h2>Delete metadata</h2>
+                        <pre><code class="language-bash">curl -XDELETE http://&lt;host&gt;/users/&lt;user&gt;/images/&lt;image&gt;/meta</code></pre>
+                        <p>Response:</p>
+                        <pre><code class="language-json">{
+    "imageIdentifier": "&lt;image>"
+}</code></pre>
+				    </section>
+				</section>
+
+				<section>
+                    <section>
+                        <h2>Image transformations</h2>
+                        <ul>
+                            <li>Triggered via query parameters</li>
+                            <li>Can be chained</li>
+                            <li>Protected against DDoS by an event listener</li>
+                            <li>Can be cached server-side by en event listener</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2>Original image</h2>
+                        <img src="http://demo.imbo-project.org/users/imbo/images/d81d67aeab8f398899936ade899a79f6?accessToken=a09c1e81721611864d3293db0adec04b57d564ffd3a6b3cca4732ed2a723a805">
+                    </section>
+
+                    <section>
+                        <p>?t[]=resize:width=200</p>
+                        <img src="http://demo.imbo-project.org/users/imbo/images/d81d67aeab8f398899936ade899a79f6?t[]=resize%3Awidth%3D200&accessToken=f2699b67037eb12e5e9dc5fcc915993610320ec81e9e118cb0ed3823115a0b29">
+                    </section>
+
+                    <section>
+                        <p>?t[]=resize:width=200,height=100</p>
+                        <img src="http://demo.imbo-project.org/users/imbo/images/d81d67aeab8f398899936ade899a79f6?t[]=resize%3Awidth%3D200%2Cheight%3D100&accessToken=4225a098de811cc04da1f179095610f1ee53410477245fe63b866d890a7d6a7d">
+                    </section>
+
+                    <section>
+                        <p>?t[]=thumbnail</p>
+                        <img class="demo" src="http://demo.imbo-project.org/users/imbo/images/d81d67aeab8f398899936ade899a79f6?t[]=thumbnail%3Awidth%3D50%2Cheight%3D50%2Cfit%3Doutbound&accessToken=478d729f7bb658ae9e1c4dc295fccc5f5f5a407fbc086205b511be3699917152">
+                    </section>
+
+                    <section>
+                        <p>?t[]=crop:x=128,y=0,width=256,height=256</p>
+                        <img src="http://demo.imbo-project.org/users/imbo/images/d81d67aeab8f398899936ade899a79f6?t[]=crop%3Ax%3D128%2Cy%3D0%2Cwidth%3D256%2Cheight%3D256&accessToken=e803909fdb151ee57f5c65ec924cc1bd36c05d46a8f3ad449127a86c593e26aa">
+                    </section>
+
+                    <section>
+                        <p>?t[]=desaturate</p>
+                        <img src="http://demo.imbo-project.org/users/imbo/images/d81d67aeab8f398899936ade899a79f6?t[]=desaturate&accessToken=eea58883ec373e072dcb2548d30d5fff0f0de75aca694752fc3602f3b286a814">
+                    </section>
+
+                    <section>
+                        <p>?t[]=flipHorizontally&amp;t[]=flipVertically</p>
+                        <img src="http://demo.imbo-project.org/users/imbo/images/d81d67aeab8f398899936ade899a79f6?t[]=flipHorizontally&t[]=flipVertically&accessToken=f70f493c3961f78c6abac4e56bc7f339ce0eef011f11f137f160692bc91d0b35">
+                    </section>
+
+                    <section>
+                        <p><small>?t[]=resize:width=200&amp;t[]=desaturate<br>&amp;t[]=border:color=225D10,width=15,height=15<br>&amp;t[]=border:color=588E00,width=15,height=15<br>&amp;t[]=border:color=95C400,width=15,height=15<br>&amp;t[]=border:color=225D10,width=15,height=15</small></p>
+                        <img src="http://demo.imbo-project.org/users/imbo/images/d81d67aeab8f398899936ade899a79f6?t[]=resize%3Awidth%3D200&t[]=desaturate&t[]=border%3Acolor%3D%23225D10%2Cwidth%3D15%2Cheight%3D15&t[]=border%3Acolor%3D%23588E00%2Cwidth%3D15%2Cheight%3D15&t[]=border%3Acolor%3D%2395C400%2Cwidth%3D15%2Cheight%3D15&t[]=border%3Acolor%3D%23225D10%2Cwidth%3D15%2Cheight%3D15&accessToken=342e381f6cb67ca92dac247fe2b382275207f6a06922e16fbd4cec485baca57e">
+                    </section>
+				</section>
+
+				<section>
+                    <section>
+                        <h2>Supports several resource representations out of the box</h2>
+                        <ul>
+                            <li>application/json</li>
+                            <li>application/xml</li>
+                            <li>image/jpeg</li>
+                            <li>image/png</li>
+                            <li>image/gif</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2>Best match based on the Accept header</h2>
+                        <pre><code class="language-http">GET /users/&lt;user>/images/&lt;image> HTTP/1.1
+Host: imbo.vg.no
+Accept: image/jpeg,image/png;q=0.9,image/*;q=0.5,*/*;q=0.1</code></pre>
+                        <pre><code class="language-http">HTTP/1.1 200 OK
+Allow: GET, HEAD, DELETE, PUT
+Cache-Control: max-age=31536000, public
+Content-Type: image/jpeg
+Date: Thu, 07 Mar 2013 19:01:31 GMT
+ETag: "700deaf520ebdf1c0c060ecda0fb84d9"
+Last-Modified: Mon, 04 Mar 2013 21:11:26 GMT
+Vary: Accept
+
+&lt;binary data></code></pre>
+                    </section>
+
+                    <section>
+                        <h2>Use the RFC, Imbo!</h2>
+                        <pre><code class="language-http">GET /users/&lt;user>/images/&lt;image> HTTP/1.1
+Host: imbo.vg.no
+Accept: Accept: image/jpeg,image/png;q=0.9,image/*;q=0.5,*/*;q=0.1
+If-Modified-Since: Mon, 04 Mar 2013 21:11:26 GMT
+If-None-Match: "700deaf520ebdf1c0c060ecda0fb84d9"</code></pre>
+                        <pre><code class="language-http">HTTP/1.1 304 Not Modified
+Cache-Control: max-age=31536000, public
+Date: Thu, 07 Mar 2013 19:12:17 GMT
+ETag: "700deaf520ebdf1c0c060ecda0fb84d9"
+Vary: Accept</code></pre>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Server configuration</h2>
+                        <ul>
+                            <li>Plain old PHP</li>
+                            <li>Override default behaviour</li>
+                            <li>Custom event listeners</li>
+                            <li>Transformation presets</li>
+                            <li>Choose between storage backends:<ul>
+                                <li>GridFS (default)</li>
+                                <li>Filesystem</li>
+                                <li>Doctrine (PDO)</li>
+                            </ul></li>
+                            <li>Choose between "metadata" backends:<ul>
+                                <li>MongoDB (default)</li>
+                                <li>Doctrine (PDO)</li>
+                            </ul></li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h3>Users</h3>
+                        <pre><code class="php">&lt;?php
+return array(
+    'auth' => array(
+        'publickey' => 'privatekey',
+        'someotherkey' => 'someotherprivatekey',
+    ),
+);</code></pre>
+                        <pre><code class="php">&lt;?php
+$pdo = new PDO('dsn', 'user', 'password');
+$sql = "SELECT publicKey, privateKey FROM imbo_users";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$auth = $stmt->fetchAll(PDO::FETCH_COLUMN | PDO::FETCH_UNIQUE);
+
+return array(
+    'auth' => $auth,
+);</code></pre>
+                    </section>
+
+                    <section>
+                        <h3>Event listeners</h3>
+                        <p>Can be specified via a simple closure</p>
+                        <pre><code class="php">&lt;?php
+return array(
+    'eventListeners' => array(
+        'customHeader' => array(
+            'callback' => function($event) {
+                $response = $event->getResponse();
+                $response->headers->set(
+                    'X-Imbo-Custom-Header',
+                    'some value',
+                );
+            },
+            'events' => array('image.get'),
+        ),
+    ),
+);</code></pre>
+                    </section>
+
+                    <section>
+                        <h3>Event listeners</h3>
+                        <p>or by implementing the <em>Imbo\EventListener\ListenerInterface</em> interface:</p>
+                        <pre><code class="php">&lt;?php
+namespace Imbo\EventListener;
+
+class CustomListener implements ListenerInterface {
+    // ...
+}
+
+return array(
+    'eventListeners' => array(
+        'myListener' => 'Imbo\EventListener\CustomListener',
+        // 'myListener' => new CustomListener(),
+    ),
+);
+</code></pre>
+                    </section>
+
+                    <section>
+                        <h3>Event listeners</h3>
+                        <p>Disable default event listeners for easier debugging when developing/testing</p>
+                        <pre><code class="php">&lt;?php
+return array(
+    'eventListeners' => array(
+        'auth' => null,
+        'accessToken' => null,
+    ),
+);
+</code></pre>
+                    </section>
+
+                    <section>
+                        <h3>Transformation presets</h3>
+                        <p>Create a preset for a collection of transformations</p>
+                        <pre><code class="php">&lt;?php
+namespace Imbo\Image\Transformation;
+
+return array(
+    'imageTransformations' => array(
+        'graythumb' => function (array $params) {
+            return new Collection(array(
+                new Desaturate(),
+                new Thumbnail($params),
+            ));
+        },
+    ),
+);
+</code></pre>
+                        <p>Triggered via <em>?t[]=graythumb</em></p>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Clients</h2>
+                        <ul>
+                            <li>PHP</li>
+                            <li>CLI (PHP wrapper)</li>
+                            <li>Java</li>
+                            <li>JavaScript</li>
+                            <li>Python and Ruby will follow</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2>PHP - Add image</h2>
+                        <pre><code class="language-php">&lt;?php
+$client = new ImboClient\Client($host, $publicKey, $privateKey);
+$response = $client->addImage('/path/to/image.jpg');
+$imageIdentifier = $response->getImageIdentifier();
+echo $imageIdentifier; // 46ec531c99ea6f0b5d64374744f26151</code></pre>
+                    </section>
+
+                    <section>
+                        <h2>PHP - Delete image</h2>
+                        <pre><code class="language-php">&lt;?php
+$client = new ImboClient\Client($host, $publicKey, $privateKey);
+$response = $client->deleteImage($imageIdentifier);</code></pre>
+                    </section>
+
+                    <section>
+                        <h2>PHP - Generate URLs</h2>
+                        <pre><code class="language-php">&lt;?php
+$client = new ImboClient\Client($host, $publicKey, $privateKey);
+$imageUrl = $client->getImageUrl($imageIdentifier);
+
+// Generate URL to an image, including access token
+echo $client->getImageUrl($imageIdentifier)
+                ->resize(200, 100)
+                ->border()
+                ->jpg();
+
+// Generate URL to the user, including access token
+echo $client->getUserUrl();
+
+// Generate URL to the imags of the user, including access token
+echo $client->getImagesUrl();</code></pre>
+                    </section>
+
+                    <!-- JS -->
+                    <section>
+                        <h2>JS - Install (node.js)</h2>
+                        <pre><code>npm install imbo-client</code></pre>
+                    </section>
+
+                    <section>
+                        <h2>JS - Add image</h2>
+                        <pre><code class="language-js">var imbo = require('imbo-client');
+
+var client = new Imbo.Client(host, publicKey, privateKey);
+
+client.addImage('/path/to/image.jpg', function(err, imageIdentifier) {
+    console.log(imageIdentifier); // 46ec531c99ea6f0b5d64374744f26151
+});
+</code></pre>
+                    </section>
+
+                    <section>
+                        <h2>JS - Delete image</h2>
+                        <pre><code class="language-js">var imbo = require('imbo-client');
+
+var client = new Imbo.Client(host, publicKey, privateKey);
+
+client.deleteImageByIdentifier(imageIdentifier);</code></pre>
+                    </section>
+
+                    <section>
+                        <h2>JS - Generate URLs</h2>
+                        <pre><code class="language-js">var imbo = require('imbo-client');
+
+var client = new Imbo.Client(host, publicKey, privateKey);
+var imageUrl = client.getImageUrl(imageIdentifier);
+
+// Generate URL to an image, including access token
+console.log(client.getImageUrl(imageIdentifier)
+                  .resize(200, 100)
+                  .border()
+                  .jpg()
+           );
+</code></pre>
+                    </section>
+                    <!-- End JS -->
+                </section>
+
+                <section>
+                    <h2>Links and stuff</h2>
+                    <ul>
+                        <li><a href="https://github.com/imbo">https://github.com/imbo</a></li>
+                        <li><a href="http://docs.imbo-project.org">http://docs.imbo-project.org</a></li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h1><span class="i">T</span><span class="m">h</span><span class="b">e</span> <span class="o">e</span><span class="i">n</span><span class="m">d</span><span class="b">.</span></h1>
+                </section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+		</script>
+	</body>
+</html>
