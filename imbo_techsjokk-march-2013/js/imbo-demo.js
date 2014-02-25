@@ -31,28 +31,17 @@
             this.progress.insertAfter($('<br>').insertAfter(e.target));
 
             var files = e.target.files || e.dataTransfer.files;
-            var file  = files[0];
-            var demo  = this;
 
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                this.client.addImageFromBlob(e.target.result, {
-                    complete      : demo.onComplete.bind(this),
-                    uploadComplete: demo.onUploadComplete.bind(this),
-                    progress      : demo.onUploadProgress.bind(this)
-                });
-            }.bind(this);
-            reader.readAsBinaryString(file);
+            this.client.addImage(files[0], {
+                onComplete      : this.onComplete.bind(this),
+                onProgress      : this.onUploadProgress.bind(this)
+            });
         },
 
         onUploadProgress: function(e) {
             if (!e.lengthComputable) { return; }
             var percentage = Math.round((e.loaded * 100) / e.total);
             this.progress.attr('value', percentage);
-        },
-
-        onUploadComplete: function(err, identifier, res) {
-
         },
 
         onComplete: function(err, identifier, res) {
@@ -64,7 +53,7 @@
             }
 
             this.result.append(success);
-            var url = this.client.getImageUrl(identifier).maxSize(200, 200);
+            var url = this.client.getImageUrl(identifier).maxSize({ width: 200, height: 200 });
             var img = $('<img />').attr('src', url.toString()).insertAfter(success);
 
             this.imageDemo = $('.result-img', this.element).attr('src', url.reset().toString());
@@ -72,6 +61,11 @@
             this.url = url;
             this.updateUrl();
             Reveal.down();
+
+            if (document.activeElement !== document.body) {
+                document.activeElement.blur();
+                document.body.focus();
+            }
 
             this.progress.remove();
         },
@@ -91,22 +85,28 @@
             var buttons = this.element.find('.buttons'), imbo = this;
 
             $('.thumbnail', buttons).on('click', function() {
-                var dim = prompt('Width,height', '120,120').split(',');
-                imbo.imageDemo.attr('src', imbo.url.thumbnail(dim[0] || 120, dim[1] || 120));
+                var dim = prompt('Width,height', '120,120');
+                if (!dim) { return; }
+                dim = dim.split(',');
+                imbo.imageDemo.attr('src', imbo.url.thumbnail({ width: dim[0] || 120, height: dim[1] || 120 }));
             });
 
             $('.border', buttons).on('click', function() {
-                imbo.imageDemo.attr('src', imbo.url.border('#bf1942', 25, 25));
+                imbo.imageDemo.attr('src', imbo.url.border({ color: '#bf1942', width: 25, height: 25 }));
             });
 
             $('.maxSize', buttons).on('click', function() {
-                var dim = prompt('Width,height', '120,120').split(',');
-                imbo.imageDemo.attr('src', imbo.url.maxSize(dim[0] || 120, dim[1] || 120));
+                var dim = prompt('Width,height', '120,120');
+                if (!dim) { return; }
+                dim = dim.split(',');
+                imbo.imageDemo.attr('src', imbo.url.maxSize({ width: dim[0] || 120, height: dim[1] || 120 }));
             });
 
             $('.crop', buttons).on('click', function() {
-                var dim = prompt('X,Y,Width,Height', '64,150,256,256').split(',');
-                imbo.imageDemo.attr('src', imbo.url.crop(dim[0], dim[1], dim[2], dim[3]));
+                var dim = prompt('X,Y,Width,Height', '64,150,256,256');
+                if (!dim) { return; }
+                dim = dim.split(',');
+                imbo.imageDemo.attr('src', imbo.url.crop({ x: dim[0], y: dim[1], width: dim[2], height: dim[3] }));
             });
 
             $('.flipY', buttons).on('click', function() {
@@ -118,7 +118,9 @@
             });
 
             $('.rotate', buttons).on('click', function() {
-                imbo.imageDemo.attr('src', imbo.url.rotate(prompt('Angle', '-45')));
+                var angle = prompt('Angle', '-45');
+                if (!angle) { return; }
+                imbo.imageDemo.attr('src', imbo.url.rotate({ angle: angle }));
             });
 
             $('.sepia', buttons).on('click', function() {
